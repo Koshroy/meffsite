@@ -17,6 +17,8 @@ library
   hs-source-dirs:      src
   exposed-modules:     Lib
   build-depends:       base >= 4.7 && < 5
+                     , yaml
+                     , text
   default-language:    Haskell2010
 
 executable spock-hello-world-exe
@@ -29,6 +31,8 @@ executable spock-hello-world-exe
                      , text
                      , hsass
                      , transformers
+                     , wai
+                     , wai-middleware-static
   default-language:    Haskell2010
 
 test-suite spock-hello-world-test
