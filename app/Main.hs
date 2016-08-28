@@ -19,7 +19,8 @@ main =
       Right config ->
         runSpock (fromIntegral $ port config) $ spockT id $
         do
-          middleware myStaticPolicy
+          middleware $
+            myStaticPolicy (T.unpack $ scssPrefix config) (T.unpack $ staticDir config)
           get ("echo" <//> var) $ \something ->
             text $ T.concat ["Echo: ", something]
           get (static "test") $
@@ -38,8 +39,8 @@ scssTest = do
     Right s -> return s
 
 
-myStaticPolicy :: Middleware
-myStaticPolicy = staticPolicy $
-  (hasPrefix "static") >->
-  (policy $ (\s -> fmap T.unpack (T.stripPrefix "static/" $ T.pack s))) >->
-  (addBase "/home/torifuda/tmp")
+myStaticPolicy :: String -> String -> Middleware
+myStaticPolicy scssPrefix staticDir = staticPolicy $
+  (hasPrefix scssPrefix) >->
+  (policy $ (\s -> fmap T.unpack (T.stripPrefix (T.pack (scssPrefix ++ "/")) $ T.pack s))) >->
+  (addBase staticDir)
