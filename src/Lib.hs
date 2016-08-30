@@ -4,6 +4,7 @@ module Lib
     ( getSiteConfig,
       SiteConfig,
       port,
+      prod,
       staticDir,
       scssPrefix
     ) where
@@ -17,6 +18,7 @@ data SiteConfig = SiteConfig {
   port :: Integer
   , staticDir :: T.Text
   , scssPrefix :: T.Text
+  , prod :: Bool
   } deriving (Generic, Show)
 
 instance FromJSON SiteConfig
