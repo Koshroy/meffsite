@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
+import Control.Monad (when)
 import Control.Monad.IO.Class
 import Lib
 import Network.Wai (Middleware)
@@ -20,7 +21,8 @@ main =
       Left pe -> putStrLn $ show pe
       Right config ->
         do
-          compileAllSCSS (T.unpack $ staticDir config) "/home/torifuda/tmp/newtmp"
+          when (not (prod config)) $
+            compileAllSCSS (T.unpack $ staticDir config) "/home/torifuda/tmp/newtmp"
           runSpock (fromIntegral $ port config) $ spockT id $
             do
               middleware $ myStaticPolicy config
@@ -45,12 +47,14 @@ scssTest = do
 compileAllSCSS :: FilePath -> FilePath -> IO ()
 compileAllSCSS staticPath destPath = do
   contents <- getDirectoryContents staticPath
-  let scssPaths = filter (\p -> (takeExtension p) == ".scss") contents
+  let scssNames = filter (\p -> (takeExtension p) == ".scss") contents
+  let scssPaths = fmap (\p -> staticPath </> p) scssNames
   mapM_ ((flip compileScssFile) destPath) scssPaths
   
   
 compileScssFile :: FilePath -> FilePath -> IO ()
 compileScssFile filePath destPath = do
+  putStrLn "---------"
   putStrLn $ "Compiling scss file " ++ filePath ++ " to " ++ destPath
   compile <- compileFile filePath def
   case compile of
