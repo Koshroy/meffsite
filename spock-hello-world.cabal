@@ -19,6 +19,12 @@ library
   build-depends:       base >= 4.7 && < 5
                      , yaml
                      , text
+                     , containers
+                     , directory
+                     , filepath
+                     , hsass
+                     , mustache
+                     , parsec
   default-language:    Haskell2010
 
 executable spock-hello-world-exe
@@ -26,12 +32,11 @@ executable spock-hello-world-exe
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
-                     , directory
-                     , filepath
+                     , containers
                      , Spock
                      , spock-hello-world
+                     , http-types
                      , text
-                     , hsass
                      , transformers
                      , wai
                      , wai-middleware-static
@@ -48,4 +53,4 @@ test-suite spock-hello-world-test
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/spock-hello-world
+  location: https://github.com/koshroy/meffsite

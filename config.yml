@@ -1,4 +1,7 @@
 port: 3000
-scssPrefix: static1
-staticDir: /home/torifuda/tmp/
+scssPrefix: scss
+staticPrefix: static
+htmlDir: /home/torifuda/meffsite/html
+staticDir: /home/torifuda/meffsite/static
+scssCompileDir: /home/torifuda/meffsite/scss
 prod: false
